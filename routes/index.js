@@ -6,7 +6,7 @@ var User     = require("../models/user")
 
 // root route
 router.get("/", function(req, res){
-   res.render("landing");
+   res.render("landing", {page: "register"});
 });
 
 
@@ -15,24 +15,25 @@ router.get("/register", function(req, res){
    res.render("register");
 });
 
-//  handle sign up logic
-router.post("/register", function(req, res) {
-   var newUSer = new User({username: req.body.username});
-   User.register(newUSer, req.body.password, function(err, user){
-      if(err){
-         return res.render("register", {"error": err.message});
-      } 
-        passport.authenticate("local")(req, res, function(){
-        req.flash("success", "Welcome to the YelpCamp " + user.username);    
-        res.redirect("/campgrounds");
-      });
+//handle sign up logic
+router.post("/register", function(req, res){
+   var newUser = new User({username: req.body.username});
+   User.register(newUser, req.body.password, function(err, user){
+       if(err){
+           console.log(err);
+           return res.render("register", {error: err.message});
+       }
+         passport.authenticate("local")(req, res, function(){
+          req.flash("success", "Successfully Signed Up! Nice to meet you " + req.body.username);
+          res.redirect("/campgrounds"); 
+       });
    });
 });
 
 
 //SHOW LOGIN FORM
 router.get("/login", function(req, res) {
-   res.render("login"); 
+   res.render("login", {page: "login"}); 
 });
 //LOGIN LOGIC
 router.post("/login",passport.authenticate("local",
