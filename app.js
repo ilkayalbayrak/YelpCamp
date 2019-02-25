@@ -28,7 +28,7 @@ app.use(methodOverride("_method"));
 app.use(flash());
 //seedDB(); //seed the database
 app.locals.moment = require("moment");
-
+require('dotenv').config()
 
 
 //PASSPORT CONFIG
